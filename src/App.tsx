@@ -569,34 +569,21 @@ function QuoteEditor({
             )}
           </div>
           <div>
-            <h3 className="field-heading">Rates</h3>
+            <h3 className="field-heading">Cost per service</h3>
             <p className="field-help">
-              Install fee is bait stations × the station rate, plus Time Mist and FCU when ticked
-              (prices from Rates and times). Type the cost per service. Annual cost is cost per
-              service × visits.
+              Type the selling price per visit. Annual cost is this amount × visits. Bait station,
+              Time Mist, and FCU prices are set in Rates and times.
             </p>
-            <div className="row-2">
-              <label>
-                Rate per bait station ($)
-                <input
-                  type="number"
-                  min={0}
-                  step="0.01"
-                  value={draft.stationRate ?? settings.stationHardwareCost}
-                  onChange={(e) => patch({ stationRate: parseMoney(e.target.value) })}
-                />
-              </label>
-              <label>
-                Cost per service ($)
-                <input
-                  type="number"
-                  min={0}
-                  step="0.01"
-                  value={draft.serviceFee ?? 0}
-                  onChange={(e) => patch({ serviceFee: parseMoney(e.target.value) })}
-                />
-              </label>
-            </div>
+            <label>
+              Cost per service ($)
+              <input
+                type="number"
+                min={0}
+                step="0.01"
+                value={draft.serviceFee ?? 0}
+                onChange={(e) => patch({ serviceFee: parseMoney(e.target.value) })}
+              />
+            </label>
           </div>
           <div className="row-2">
             <label>
@@ -740,9 +727,9 @@ function SettingsPanel({
     <section className="card form-card">
       <h2>Rates and time allowances</h2>
       <p>
-        Enter the cost per service on each job. Install fee is bait stations × the station rate,
-        plus Time Mist Unit and FCU when those are ticked. Install time is calculated at 1 bait
-        station = {settings.minutesPerStationInstall} min.
+        Enter the cost per service on each job. Bait station, Time Mist, and FCU prices here set
+        the install fee on the proposal. Install time is calculated at 1 bait station ={" "}
+        {settings.minutesPerStationInstall} min.
       </p>
       <div className="fields">
         <div className="row-2">
@@ -803,7 +790,7 @@ function SettingsPanel({
         </div>
         <div className="row-2">
           <label>
-            Default rate per bait station ($)
+            Rate per bait station ($)
             <input
               type="number"
               min={0}

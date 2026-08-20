@@ -156,11 +156,8 @@ export function parseMoney(value: string | number | undefined): number {
   return roundMoney(Math.max(0, n));
 }
 
-export function equipmentRate(input: QuoteInput, settings: Settings): number {
-  if (input.stationRate == null || !Number.isFinite(Number(input.stationRate))) {
-    return parseMoney(settings.stationHardwareCost);
-  }
-  return parseMoney(input.stationRate);
+export function equipmentRate(_input: QuoteInput, settings: Settings): number {
+  return parseMoney(settings.stationHardwareCost);
 }
 
 export function calculateQuote(input: QuoteInput, settings: Settings): QuoteResult {
