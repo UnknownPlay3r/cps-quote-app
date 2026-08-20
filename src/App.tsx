@@ -597,22 +597,6 @@ function QuoteEditor({
                 />
               </label>
             </div>
-            <p className="empty" style={{ padding: "8px 0 0" }}>
-              Install fee (calculated): {formatMoney(result.installFee)} — {result.stations} station
-              {result.stations === 1 ? "" : "s"} × {formatMoney(draft.stationRate ?? 0)}
-              {draft.timeMist
-                ? ` + ${draft.timeMistCount || 0} Time Mist × ${formatMoney(settings.timeMistPrice ?? 0)}`
-                : ""}
-              {draft.fcu
-                ? ` + ${draft.fcuCount || 0} FCU × ${formatMoney(settings.fcuPrice ?? 0)}`
-                : ""}
-              <br />
-              Annual cost: {formatMoney(result.annualService)} (
-              {/^\d+$/.test(String(result.visitsLabel))
-                ? `${result.visitsLabel} visits`
-                : result.visitsLabel}{" "}
-              × {formatMoney(result.serviceFee)})
-            </p>
           </div>
           <div className="row-2">
             <label>
