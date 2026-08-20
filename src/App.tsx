@@ -1,6 +1,7 @@
 import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { applyGeneratedQuote, calculateQuote, formatMoney, parseMoney } from "./calc";
 import { deleteQuote, loadQuotes, loadSettings, saveQuote, saveSettings } from "./storage";
+import cpsLogo from "./assets/cps-logo.png";
 import {
   FREQUENCY_OPTIONS,
   PEST_OPTIONS,
@@ -12,7 +13,6 @@ import {
 } from "./types";
 
 const APP_VERSION_LABEL = `Version ${__APP_VERSION__}`;
-const CPS_LOGO = `${import.meta.env.BASE_URL}cps-logo.png`;
 
 function makeQuote(settings: Settings): QuoteInput {
   return applyGeneratedQuote(
@@ -80,7 +80,7 @@ export default function App() {
         <div className="brand-lockup">
           <img
             className="cps-logo cps-logo-nav"
-            src={CPS_LOGO}
+            src={cpsLogo}
             alt="Competitive Pest Services"
           />
         </div>
@@ -646,7 +646,7 @@ function QuoteEditor({
         <div className="proposal-letterhead">
           <img
             className="cps-logo cps-logo-proposal"
-            src={CPS_LOGO}
+            src={cpsLogo}
             alt="Competitive Pest Services"
           />
           <h2>Your Proposal</h2>
