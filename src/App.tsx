@@ -12,6 +12,7 @@ import {
 } from "./types";
 
 const APP_VERSION_LABEL = `Version ${__APP_VERSION__}`;
+const CPS_LOGO = `${import.meta.env.BASE_URL}cps-logo.png`;
 
 function makeQuote(settings: Settings): QuoteInput {
   return applyGeneratedQuote(
@@ -79,7 +80,7 @@ export default function App() {
         <div className="brand-lockup">
           <img
             className="cps-logo cps-logo-nav"
-            src="/cps-logo.png"
+            src={CPS_LOGO}
             alt="Competitive Pest Services"
           />
         </div>
@@ -645,7 +646,7 @@ function QuoteEditor({
         <div className="proposal-letterhead">
           <img
             className="cps-logo cps-logo-proposal"
-            src="/cps-logo.png"
+            src={CPS_LOGO}
             alt="Competitive Pest Services"
           />
           <h2>Your Proposal</h2>
