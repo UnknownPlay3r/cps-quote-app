@@ -412,7 +412,9 @@ textarea {
   border: 2px solid var(--navy);
   border-radius: 10px;
   background: #fff;
-  overflow: hidden;
+  overflow: visible;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .mist-block.on {
@@ -421,14 +423,18 @@ textarea {
 
 .mist-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding-right: 12px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .mist-head .big-tick {
-  flex: 1;
+  flex: 1 1 12rem;
+  min-width: 0;
   border: none;
   border-radius: 0;
   background: transparent;
@@ -666,11 +672,16 @@ textarea {
 
 @media screen {
   html,
-  body,
-  #root {
+  body {
     overflow-x: hidden;
+    overflow-y: auto;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+  }
+
+  #root {
+    overflow: visible;
+    max-width: 100%;
   }
 }
 
@@ -695,6 +706,22 @@ textarea {
   .proposal-scroll {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
+  }
+
+  .bait-row,
+  .mist-head {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
+  .bait-count,
+  .bait-count input,
+  .bait-place,
+  .bait-place input {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 }
 
@@ -881,6 +908,55 @@ textarea {
   .app-footer {
     padding: 8px max(16px, env(safe-area-inset-left)) max(20px, env(safe-area-inset-bottom));
     padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .bait-row,
+  .mist-head {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 10px;
+    padding-right: 0;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .bait-tick,
+  .mist-head .big-tick {
+    width: 100%;
+    flex: none;
+  }
+
+  .bait-count,
+  .bait-count input,
+  .bait-place,
+  .bait-place input,
+  .mist-place {
+    display: grid;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .bait-count input,
+  .bait-place input,
+  input[type="number"] {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 44px;
+  }
+
+  .mist-head .bait-count {
+    width: 100%;
+    padding: 0 16px 8px;
+  }
+
+  .mist-place {
+    padding: 0 16px 14px;
   }
 }
 
