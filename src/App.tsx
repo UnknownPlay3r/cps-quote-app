@@ -270,43 +270,46 @@ function QuoteEditor({
           <div>
             <h3 className="field-heading">Bait stations</h3>
             <p className="field-help">
-              Tick External and/or Internal, then type how many and where to place them.
+              Tick External and/or Internal, then type how many and Location(s).
             </p>
-            <div className="bait-rows">
-              <div className={draft.externalBait ? "bait-row on" : "bait-row"}>
-                <label className="bait-tick">
-                  <input
-                    type="checkbox"
-                    checked={draft.externalBait}
-                    onChange={(e) =>
-                      updateBait({
-                        externalBait: e.target.checked,
-                        externalStations:
-                          e.target.checked && draft.externalStations <= 0
-                            ? 10
-                            : draft.externalStations,
-                      })
-                    }
-                  />
-                  External
-                </label>
-                <label className="bait-count">
-                  How many
-                  <input
-                    type="number"
-                    min={0}
-                    disabled={!draft.externalBait}
-                    value={draft.externalStations}
-                    onChange={(e) =>
-                      updateBait({
-                        externalStations: Math.max(0, Math.round(Number(e.target.value) || 0)),
-                      })
-                    }
-                  />
-                </label>
+            <div className="tick-stack">
+              <div className={draft.externalBait ? "mist-block on" : "mist-block"}>
+                <div className="mist-head">
+                  <label className={draft.externalBait ? "big-tick on" : "big-tick"}>
+                    <input
+                      type="checkbox"
+                      checked={draft.externalBait}
+                      onChange={(e) =>
+                        updateBait({
+                          externalBait: e.target.checked,
+                          externalStations:
+                            e.target.checked && draft.externalStations <= 0
+                              ? 10
+                              : draft.externalStations,
+                        })
+                      }
+                    />
+                    External
+                  </label>
+                  {draft.externalBait ? (
+                    <label className="bait-count">
+                      How many
+                      <input
+                        type="number"
+                        min={0}
+                        value={draft.externalStations}
+                        onChange={(e) =>
+                          updateBait({
+                            externalStations: Math.max(0, Math.round(Number(e.target.value) || 0)),
+                          })
+                        }
+                      />
+                    </label>
+                  ) : null}
+                </div>
                 {draft.externalBait ? (
-                  <label className="bait-place">
-                    Where to place them
+                  <label className="bait-place mist-place">
+                    Location(s)
                     <input
                       value={draft.externalPlace ?? ""}
                       onChange={(e) => patch({ externalPlace: e.target.value })}
@@ -315,40 +318,43 @@ function QuoteEditor({
                   </label>
                 ) : null}
               </div>
-              <div className={draft.internalBait ? "bait-row on" : "bait-row"}>
-                <label className="bait-tick">
-                  <input
-                    type="checkbox"
-                    checked={draft.internalBait}
-                    onChange={(e) =>
-                      updateBait({
-                        internalBait: e.target.checked,
-                        internalStations:
-                          e.target.checked && draft.internalStations <= 0
-                            ? 5
-                            : draft.internalStations,
-                      })
-                    }
-                  />
-                  Internal
-                </label>
-                <label className="bait-count">
-                  How many
-                  <input
-                    type="number"
-                    min={0}
-                    disabled={!draft.internalBait}
-                    value={draft.internalStations}
-                    onChange={(e) =>
-                      updateBait({
-                        internalStations: Math.max(0, Math.round(Number(e.target.value) || 0)),
-                      })
-                    }
-                  />
-                </label>
+              <div className={draft.internalBait ? "mist-block on" : "mist-block"}>
+                <div className="mist-head">
+                  <label className={draft.internalBait ? "big-tick on" : "big-tick"}>
+                    <input
+                      type="checkbox"
+                      checked={draft.internalBait}
+                      onChange={(e) =>
+                        updateBait({
+                          internalBait: e.target.checked,
+                          internalStations:
+                            e.target.checked && draft.internalStations <= 0
+                              ? 5
+                              : draft.internalStations,
+                        })
+                      }
+                    />
+                    Internal
+                  </label>
+                  {draft.internalBait ? (
+                    <label className="bait-count">
+                      How many
+                      <input
+                        type="number"
+                        min={0}
+                        value={draft.internalStations}
+                        onChange={(e) =>
+                          updateBait({
+                            internalStations: Math.max(0, Math.round(Number(e.target.value) || 0)),
+                          })
+                        }
+                      />
+                    </label>
+                  ) : null}
+                </div>
                 {draft.internalBait ? (
-                  <label className="bait-place">
-                    Where to place them
+                  <label className="bait-place mist-place">
+                    Location(s)
                     <input
                       value={draft.internalPlace ?? ""}
                       onChange={(e) => patch({ internalPlace: e.target.value })}
