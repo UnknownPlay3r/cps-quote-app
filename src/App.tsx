@@ -19,7 +19,7 @@ function makeQuote(settings: Settings): QuoteInput {
     {
       ...emptyQuote(),
       stationRate: settings.stationHardwareCost,
-      serviceFee: settings.costPerService,
+      serviceFeeLocked: false,
     },
     settings,
   );
@@ -110,7 +110,17 @@ export default function App() {
       window.alert("Enter a location for the FCU (Fly control unit).");
       return;
     }
-    saveQuote(draft);
+    const live = calculateQuote({ ...draft, serviceFeeLocked: false }, settings);
+    saveQuote({
+      ...draft,
+      serviceFee: live.serviceFee,
+      serviceFeeLocked: true,
+    });
+    setDraft((current) => ({
+      ...current,
+      serviceFee: live.serviceFee,
+      serviceFeeLocked: true,
+    }));
     setQuotes(loadQuotes());
   }
 
@@ -258,7 +268,9 @@ function QuoteEditor({
   function patch(partial: Partial<QuoteInput>) {
     setDraft((current) => {
       const next = { ...current, ...partial };
-      if ("pests" in partial) return applyGeneratedQuote(next, settings);
+      if ("pests" in partial) {
+        return applyGeneratedQuote({ ...next, serviceFeeLocked: false }, settings);
+      }
       return next;
     });
   }
@@ -272,7 +284,7 @@ function QuoteEditor({
 
   function updateBait(partial: Partial<QuoteInput>) {
     setDraft((current) =>
-      applyGeneratedQuote({ ...current, ...partial, timesCustom: false }, settings),
+      applyGeneratedQuote({ ...current, ...partial, timesCustom: false, serviceFeeLocked: false }, settings),
     );
   }
 
@@ -282,6 +294,7 @@ function QuoteEditor({
       installMinutes: Math.max(0, Math.round(partial.installMinutes ?? current.installMinutes) || 0),
       serviceMinutes: Math.max(0, Math.round(partial.serviceMinutes ?? current.serviceMinutes) || 0),
       timesCustom: true,
+      serviceFeeLocked: false,
     }));
   }
 
@@ -435,6 +448,7 @@ function QuoteEditor({
                           internalResidual: e.target.checked,
                           residualCustom: true,
                           timesCustom: false,
+                          serviceFeeLocked: false,
                         },
                         settings,
                       ),
@@ -455,6 +469,7 @@ function QuoteEditor({
                           externalResidual: e.target.checked,
                           residualCustom: true,
                           timesCustom: false,
+                          serviceFeeLocked: false,
                         },
                         settings,
                       ),
@@ -751,9 +766,9 @@ function SettingsPanel({
     <section className="card form-card">
       <h2>Rates and time allowances</h2>
       <p>
-        Cost per service, bait station, Time Mist, and FCU prices here set the proposal. Cost per
-        service is the customer price per visit, not the labour rate. Install time is calculated at
-        1 bait station = {settings.minutesPerStationInstall} min.
+        Labour rate ($ per hour) × service time, plus bait stations × the station rate, set TOTAL
+        COST PER SERVICE. Time Mist and FCU prices here set the install fee. Install time is
+        calculated at 1 bait station = {settings.minutesPerStationInstall} min.
       </p>
       <div className="fields">
         <div className="row-2">
@@ -804,20 +819,6 @@ function SettingsPanel({
             />
           </label>
         </div>
-        <div>
-          <label>
-            Cost per service ($)
-            <NumberInput
-              value={settings.costPerService}
-              step="0.01"
-              onCommit={(n) => patch({ costPerService: n })}
-            />
-          </label>
-          <p className="field-help">
-            Customer price per visit on the proposal (TOTAL COST PER SERVICE). Annual cost is this
-            amount × visits. This is not the labour rate.
-          </p>
-        </div>
         <div className="row-2">
           <label>
             Rate per bait station ($)
@@ -836,6 +837,10 @@ function SettingsPanel({
             />
           </label>
         </div>
+        <p className="field-help">
+          TOTAL COST PER SERVICE is (service time ÷ 60 × labour rate) + (bait stations × station
+          rate). Annual cost is that × visits. INSTALL FEE is separate.
+        </p>
         <div className="row-2">
           <label>
             Time Mist Unit ($)

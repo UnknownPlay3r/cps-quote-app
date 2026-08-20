@@ -93,6 +93,7 @@ export function loadQuotes(): QuoteInput[] {
           installationFee: quote.installationFee ?? false,
           stationRate: quote.stationRate ?? DEFAULT_SETTINGS.stationHardwareCost,
           serviceFee: quote.serviceFee ?? 0,
+          serviceFeeLocked: quote.serviceFeeLocked ?? true,
           treatmentNotes: quote.treatmentNotes ?? old.treatmentArea ?? "",
           frequency,
           customFrequency,

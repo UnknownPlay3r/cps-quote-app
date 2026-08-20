@@ -25,7 +25,6 @@ export type Settings = {
   timeMistPrice: number;
   fcuPrice: number;
   hourlyRate: number;
-  costPerService: number;
 };
 
 export type QuoteInput = {
@@ -59,6 +58,7 @@ export type QuoteInput = {
   installationFee: boolean;
   stationRate: number;
   serviceFee: number;
+  serviceFeeLocked: boolean;
   pests: PestType[];
   frequency: ServiceFrequency;
   customFrequency: string;
@@ -120,7 +120,6 @@ export const DEFAULT_SETTINGS: Settings = {
   timeMistPrice: 0,
   fcuPrice: 0,
   hourlyRate: 95,
-  costPerService: 0,
 };
 
 export function emptyQuote(): QuoteInput {
@@ -155,6 +154,7 @@ export function emptyQuote(): QuoteInput {
     installationFee: false,
     stationRate: 35,
     serviceFee: 0,
+    serviceFeeLocked: false,
     pests: ["ants", "cockroaches", "spiders", "rodents"],
     frequency: "4vpa",
     customFrequency: "",

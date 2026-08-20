@@ -160,6 +160,11 @@ export function equipmentRate(_input: QuoteInput, settings: Settings): number {
   return parseMoney(settings.stationHardwareCost);
 }
 
+export function serviceFeeFromTime(serviceMinutes: number, settings: Settings): number {
+  const hours = Math.max(0, serviceMinutes) / 60;
+  return roundMoney(hours * parseMoney(settings.hourlyRate));
+}
+
 export function calculateQuote(input: QuoteInput, settings: Settings): QuoteResult {
   const pests = selectedPests(input);
   const stations = stationCount(input);
@@ -177,10 +182,12 @@ export function calculateQuote(input: QuoteInput, settings: Settings): QuoteResu
     unitCount(input.timeMist, input.timeMistCount) * parseMoney(settings.timeMistPrice);
   const fcuInstall = unitCount(input.fcu, input.fcuCount) * parseMoney(settings.fcuPrice);
   const installFee = roundMoney(baitInstall + timeMistInstall + fcuInstall);
-  const serviceFee =
-    input.serviceFee == null || !Number.isFinite(Number(input.serviceFee))
-      ? 0
-      : parseMoney(input.serviceFee);
+  const labourPart = serviceFeeFromTime(serviceMinutes, settings);
+  const baitServicePart = stations * rate;
+  const liveServiceFee = roundMoney(labourPart + baitServicePart);
+  const serviceFee = input.serviceFeeLocked
+    ? parseMoney(input.serviceFee)
+    : liveServiceFee;
 
   return {
     pestLabels: pestLabels(pests),
