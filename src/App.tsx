@@ -402,7 +402,19 @@ function QuoteEditor({
                   </label>
                 ) : null}
               </div>
+              <label className={draft.installationFee ? "big-tick on" : "big-tick"}>
+                <input
+                  type="checkbox"
+                  checked={draft.installationFee}
+                  onChange={(e) => patch({ installationFee: e.target.checked })}
+                />
+                Installation fee
+              </label>
             </div>
+            <p className="field-help">
+              When ticked, INSTALL FEE includes bait stations × the station rate from Rates and
+              times.
+            </p>
           </div>
           <div>
             <h3 className="field-heading">Treatments</h3>

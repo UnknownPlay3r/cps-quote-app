@@ -90,6 +90,7 @@ export function loadQuotes(): QuoteInput[] {
           installMinutes: quote.installMinutes ?? 40,
           serviceMinutes: quote.serviceMinutes ?? 40,
           timesCustom: quote.timesCustom ?? false,
+          installationFee: quote.installationFee ?? false,
           stationRate: quote.stationRate ?? DEFAULT_SETTINGS.stationHardwareCost,
           serviceFee: quote.serviceFee ?? 0,
           treatmentNotes: quote.treatmentNotes ?? old.treatmentArea ?? "",

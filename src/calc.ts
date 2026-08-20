@@ -172,7 +172,7 @@ export function calculateQuote(input: QuoteInput, settings: Settings): QuoteResu
     : generated.serviceMinutes;
   const visits = visitsPerYear(input);
   const rate = equipmentRate(input, settings);
-  const baitInstall = stations * rate;
+  const baitInstall = input.installationFee ? stations * rate : 0;
   const timeMistInstall =
     unitCount(input.timeMist, input.timeMistCount) * parseMoney(settings.timeMistPrice);
   const fcuInstall = unitCount(input.fcu, input.fcuCount) * parseMoney(settings.fcuPrice);

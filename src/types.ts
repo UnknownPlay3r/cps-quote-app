@@ -56,6 +56,7 @@ export type QuoteInput = {
   installMinutes: number;
   serviceMinutes: number;
   timesCustom: boolean;
+  installationFee: boolean;
   stationRate: number;
   serviceFee: number;
   pests: PestType[];
@@ -151,6 +152,7 @@ export function emptyQuote(): QuoteInput {
     installMinutes: 30,
     serviceMinutes: 40,
     timesCustom: false,
+    installationFee: false,
     stationRate: 35,
     serviceFee: 0,
     pests: ["ants", "cockroaches", "spiders", "rodents"],
