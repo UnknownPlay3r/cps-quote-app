@@ -21,6 +21,53 @@ function makeQuote(settings: Settings): QuoteInput {
   );
 }
 
+function NumberInput({
+  value,
+  onCommit,
+  step,
+}: {
+  value: number;
+  onCommit: (n: number) => void;
+  step?: number | string;
+}) {
+  const [draft, setDraft] = useState<string | null>(null);
+  const money = step === 0.01 || step === "0.01";
+
+  function commit(raw: string) {
+    if (raw.trim() === "") {
+      onCommit(0);
+      return;
+    }
+    if (money) {
+      onCommit(parseMoney(raw));
+      return;
+    }
+    const n = Number(raw);
+    onCommit(Number.isFinite(n) ? Math.max(0, Math.round(n)) : 0);
+  }
+
+  return (
+    <input
+      type="number"
+      min={0}
+      step={step}
+      value={draft ?? (Number.isFinite(value) ? String(value) : "")}
+      onFocus={() => setDraft(Number.isFinite(value) ? String(value) : "")}
+      onChange={(e) => {
+        const raw = e.target.value;
+        setDraft(raw);
+        if (raw.trim() === "" || raw === "-" || raw === "." || raw === "-.") return;
+        if (money && (raw.endsWith(".") || raw.endsWith(".0"))) return;
+        commit(raw);
+      }}
+      onBlur={() => {
+        commit(draft ?? "");
+        setDraft(null);
+      }}
+    />
+  );
+}
+
 export default function App() {
   const [view, setView] = useState<View>("home");
   const [settings, setSettings] = useState<Settings>(loadSettings);
@@ -228,8 +275,8 @@ function QuoteEditor({
   function setTimes(partial: { installMinutes?: number; serviceMinutes?: number }) {
     setDraft((current) => ({
       ...current,
-      installMinutes: Math.max(0, Math.round(partial.installMinutes ?? current.installMinutes)),
-      serviceMinutes: Math.max(0, Math.round(partial.serviceMinutes ?? current.serviceMinutes)),
+      installMinutes: Math.max(0, Math.round(partial.installMinutes ?? current.installMinutes) || 0),
+      serviceMinutes: Math.max(0, Math.round(partial.serviceMinutes ?? current.serviceMinutes) || 0),
       timesCustom: true,
     }));
   }
@@ -294,15 +341,9 @@ function QuoteEditor({
                   {draft.externalBait ? (
                     <label className="bait-count">
                       How many
-                      <input
-                        type="number"
-                        min={0}
+                      <NumberInput
                         value={draft.externalStations}
-                        onChange={(e) =>
-                          updateBait({
-                            externalStations: Math.max(0, Math.round(Number(e.target.value) || 0)),
-                          })
-                        }
+                        onCommit={(n) => updateBait({ externalStations: n })}
                       />
                     </label>
                   ) : null}
@@ -339,15 +380,9 @@ function QuoteEditor({
                   {draft.internalBait ? (
                     <label className="bait-count">
                       How many
-                      <input
-                        type="number"
-                        min={0}
+                      <NumberInput
                         value={draft.internalStations}
-                        onChange={(e) =>
-                          updateBait({
-                            internalStations: Math.max(0, Math.round(Number(e.target.value) || 0)),
-                          })
-                        }
+                        onCommit={(n) => updateBait({ internalStations: n })}
                       />
                     </label>
                   ) : null}
@@ -447,15 +482,9 @@ function QuoteEditor({
                   {draft.timeMist ? (
                     <label className="bait-count">
                       How many
-                      <input
-                        type="number"
-                        min={0}
+                      <NumberInput
                         value={draft.timeMistCount ?? 1}
-                        onChange={(e) =>
-                          patch({
-                            timeMistCount: Math.max(0, Math.round(Number(e.target.value) || 0)),
-                          })
-                        }
+                        onCommit={(n) => patch({ timeMistCount: n })}
                       />
                     </label>
                   ) : null}
@@ -489,15 +518,9 @@ function QuoteEditor({
                   {draft.fcu ? (
                     <label className="bait-count">
                       How many
-                      <input
-                        type="number"
-                        min={0}
+                      <NumberInput
                         value={draft.fcuCount ?? 1}
-                        onChange={(e) =>
-                          patch({
-                            fcuCount: Math.max(0, Math.round(Number(e.target.value) || 0)),
-                          })
-                        }
+                        onCommit={(n) => patch({ fcuCount: n })}
                       />
                     </label>
                   ) : null}
@@ -582,32 +605,26 @@ function QuoteEditor({
             </p>
             <label>
               Cost per service ($)
-              <input
-                type="number"
-                min={0}
-                step="0.01"
+              <NumberInput
                 value={draft.serviceFee ?? 0}
-                onChange={(e) => patch({ serviceFee: parseMoney(e.target.value) })}
+                step="0.01"
+                onCommit={(n) => patch({ serviceFee: n })}
               />
             </label>
           </div>
           <div className="row-2">
             <label>
               Install time (min)
-              <input
-                type="number"
-                min={0}
+              <NumberInput
                 value={draft.installMinutes}
-                onChange={(e) => setTimes({ installMinutes: Number(e.target.value) })}
+                onCommit={(n) => setTimes({ installMinutes: n })}
               />
             </label>
             <label>
               Service time (min)
-              <input
-                type="number"
-                min={0}
+              <NumberInput
                 value={draft.serviceMinutes}
-                onChange={(e) => setTimes({ serviceMinutes: Number(e.target.value) })}
+                onCommit={(n) => setTimes({ serviceMinutes: n })}
               />
             </label>
           </div>
@@ -757,84 +774,68 @@ function SettingsPanel({
         <div className="row-2">
           <label>
             Minutes per bait station — install
-            <input
-              type="number"
-              min={0}
+            <NumberInput
               value={settings.minutesPerStationInstall}
-              onChange={(e) => patch({ minutesPerStationInstall: Number(e.target.value) })}
+              onCommit={(n) => patch({ minutesPerStationInstall: n })}
             />
           </label>
           <label>
             Minutes per bait station — service
-            <input
-              type="number"
-              min={0}
+            <NumberInput
               value={settings.minutesPerStationRoutine}
-              onChange={(e) => patch({ minutesPerStationRoutine: Number(e.target.value) })}
+              onCommit={(n) => patch({ minutesPerStationRoutine: n })}
             />
           </label>
         </div>
         <div className="row-2">
           <label>
             Internal residual — install (min)
-            <input
-              type="number"
-              min={0}
+            <NumberInput
               value={settings.residualInstallMinutes}
-              onChange={(e) => patch({ residualInstallMinutes: Number(e.target.value) })}
+              onCommit={(n) => patch({ residualInstallMinutes: n })}
             />
           </label>
           <label>
             Internal residual — service (min)
-            <input
-              type="number"
-              min={0}
+            <NumberInput
               value={settings.residualRoutineMinutes}
-              onChange={(e) => patch({ residualRoutineMinutes: Number(e.target.value) })}
+              onCommit={(n) => patch({ residualRoutineMinutes: n })}
             />
           </label>
         </div>
         <div className="row-2">
           <label>
             Rate per bait station ($)
-            <input
-              type="number"
-              min={0}
-              step="0.01"
+            <NumberInput
               value={settings.stationHardwareCost}
-              onChange={(e) => patch({ stationHardwareCost: Number(e.target.value) })}
+              step="0.01"
+              onCommit={(n) => patch({ stationHardwareCost: n })}
             />
           </label>
           <label>
             Labour rate ($ per hour)
-            <input
-              type="number"
-              min={0}
-              step="0.01"
+            <NumberInput
               value={settings.hourlyRate}
-              onChange={(e) => patch({ hourlyRate: Number(e.target.value) })}
+              step="0.01"
+              onCommit={(n) => patch({ hourlyRate: n })}
             />
           </label>
         </div>
         <div className="row-2">
           <label>
             Time Mist Unit ($)
-            <input
-              type="number"
-              min={0}
-              step="0.01"
+            <NumberInput
               value={settings.timeMistPrice}
-              onChange={(e) => patch({ timeMistPrice: Number(e.target.value) })}
+              step="0.01"
+              onCommit={(n) => patch({ timeMistPrice: n })}
             />
           </label>
           <label>
             FCU (Fly control unit) ($)
-            <input
-              type="number"
-              min={0}
-              step="0.01"
+            <NumberInput
               value={settings.fcuPrice}
-              onChange={(e) => patch({ fcuPrice: Number(e.target.value) })}
+              step="0.01"
+              onCommit={(n) => patch({ fcuPrice: n })}
             />
           </label>
         </div>
