@@ -537,6 +537,12 @@ textarea {
 .proposal-table th:nth-child(2) { width: 24%; }
 .proposal-table th:nth-child(3) { width: 12%; }
 .proposal-table th:nth-child(4) { width: 8%; }
+
+.visits-head {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
 .proposal-table th:nth-child(5),
 .proposal-table th:nth-child(6),
 .proposal-table th:nth-child(7) { width: 13.33%; }
@@ -985,15 +991,19 @@ textarea {
 @media print {
   @page {
     size: A4 landscape;
-    margin: 10mm;
+    margin: 11mm;
   }
 
   html,
   body,
   #root {
     background: #fff !important;
+    width: 100%;
+    max-width: 100%;
     min-height: 0;
     height: auto;
+    margin: 0;
+    padding: 0;
     font-family: var(--font);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -1005,7 +1015,8 @@ textarea {
   .actions,
   .no-print,
   .form-card,
-  .table-swipe-hint {
+  .table-swipe-hint,
+  .app-footer {
     display: none !important;
   }
 
@@ -1018,10 +1029,19 @@ textarea {
 
   .quote-page {
     display: block;
+    width: 100%;
+    max-width: 100%;
     gap: 0;
   }
 
+  .quote-page > .proposal {
+    width: 100%;
+    max-width: 100%;
+  }
+
   .proposal {
+    width: 100%;
+    max-width: 100%;
     break-inside: avoid;
   }
 
@@ -1029,13 +1049,14 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 12px;
+    margin-bottom: 10px;
   }
 
   .cps-logo-proposal {
-    height: 56px;
+    height: 44px;
     width: auto;
+    max-width: 28%;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
@@ -1043,7 +1064,7 @@ textarea {
   .proposal h2 {
     display: block !important;
     margin: 0;
-    font-size: 2.2rem;
+    font-size: 1.7rem;
     font-weight: 800;
     letter-spacing: -0.03em;
     color: var(--ink);
@@ -1051,11 +1072,14 @@ textarea {
 
   .proposal-scroll {
     overflow: visible;
+    width: 100%;
+    max-width: 100%;
   }
 
   .proposal-table {
-    width: 100%;
-    min-width: 0;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
     -webkit-print-color-adjust: exact;
@@ -1063,33 +1087,55 @@ textarea {
     color-adjust: exact;
   }
 
+  .proposal-table th:nth-child(1) { width: 15%; }
+  .proposal-table th:nth-child(2) { width: 26%; }
+  .proposal-table th:nth-child(3) { width: 13%; }
+  .proposal-table th:nth-child(4),
+  .proposal-table .visits-head { width: 9%; }
+  .proposal-table th:nth-child(5) { width: 12%; }
+  .proposal-table th:nth-child(6) { width: 13%; }
+  .proposal-table th:nth-child(7) { width: 12%; }
+
+  .proposal-table th,
+  .proposal-table td {
+    overflow: hidden;
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: none;
+    -webkit-hyphens: none;
+  }
+
   .proposal-table th {
     background: #243040 !important;
     color: #c5d63c !important;
     text-transform: uppercase;
-    font-size: 0.72rem;
-    letter-spacing: 0.02em;
+    font-size: 0.62rem;
+    letter-spacing: 0.01em;
     font-weight: 800;
-    padding: 14px 8px;
+    padding: 10px 6px;
     text-align: center;
     vertical-align: middle;
-    line-height: 1.45;
+    line-height: 1.25;
     white-space: normal;
-    overflow-wrap: break-word;
-    word-break: normal;
     border: 3px solid #fff !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     color-adjust: exact;
   }
 
+  .proposal-table .visits-head {
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
   .proposal-table td {
     background: #eef0f3 !important;
-    padding: 18px 10px;
+    padding: 12px 8px;
     vertical-align: middle;
     border: 3px solid #fff !important;
-    font-size: 0.9rem;
-    line-height: 1.55;
+    font-size: 0.78rem;
+    line-height: 1.45;
     text-align: center;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -1101,11 +1147,11 @@ textarea {
   }
 
   .treatment-typed {
-    line-height: 1.7;
+    line-height: 1.55;
   }
 
   .treatment-typed div {
-    margin: 0 0 0.5em;
+    margin: 0 0 0.45em;
   }
 
   .treatment-typed div:last-child {
@@ -1115,14 +1161,18 @@ textarea {
   .pests-cell {
     text-align: center;
     font-weight: 800;
-    line-height: 1.85;
+    line-height: 1.7;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 
+  .visits-cell,
   .num-cell,
   .price-cell {
     text-align: center;
     font-weight: 700;
-    font-size: 1.15rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
   }
 
   .price-cell,
@@ -1136,19 +1186,19 @@ textarea {
   .proposal-foot {
     display: flex;
     justify-content: space-between;
-    gap: 24px;
+    gap: 16px;
     align-items: flex-start;
-    margin-top: 12px;
+    margin-top: 10px;
     break-inside: avoid;
   }
 
   .proposal-foot p {
     margin: 0;
     color: #5b6570;
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     font-style: italic;
-    max-width: 72ch;
-    line-height: 1.45;
+    max-width: 70ch;
+    line-height: 1.4;
   }
 
   .gst-note {
@@ -1158,11 +1208,11 @@ textarea {
   }
 
   .proposal-credit {
-    margin: 14px 0 0;
+    margin: 10px 0 0;
     color: #5b6570;
-    font-size: 0.72rem;
+    font-size: 0.65rem;
     font-style: normal;
     font-weight: 500;
-    line-height: 1.5;
+    line-height: 1.45;
   }
 }

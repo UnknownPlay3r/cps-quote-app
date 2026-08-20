@@ -670,7 +670,7 @@ function QuoteEditor({
                 <th>PREMISE</th>
                 <th>TREATMENT AREA</th>
                 <th>PESTS</th>
-                <th>VISITS</th>
+                <th className="visits-head">VISITS</th>
                 <th>INSTALL FEE</th>
                 <th>
                   TOTAL COST
@@ -717,7 +717,7 @@ function QuoteEditor({
                     ? "—"
                     : result.pestLabels.map((label) => <div key={label}>{label}</div>)}
                 </td>
-                <td className="num-cell">{result.visitsLabel}</td>
+                <td className="num-cell visits-cell">{result.visitsLabel}</td>
                 <td className="price-cell">{formatMoney(result.installFee)}</td>
                 <td className="price-cell">{formatMoney(result.serviceFee)}</td>
                 <td className="price-cell">{formatMoney(result.annualService)}</td>
