@@ -140,6 +140,7 @@ td,
 .form-card {
   max-width: 36rem;
   width: 100%;
+  margin-inline: auto;
 }
 
 .form-card .fields {
@@ -424,10 +425,10 @@ textarea {
 .mist-head {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 12px;
-  padding-right: 12px;
+  padding: 4px 16px 0;
   min-width: 0;
   max-width: 100%;
 }
@@ -438,10 +439,11 @@ textarea {
   border: none;
   border-radius: 0;
   background: transparent;
+  padding: 10px 0 12px;
 }
 
 .mist-head .bait-count {
-  padding: 8px 0;
+  padding: 8px 0 12px;
 }
 
 .mist-place {
@@ -471,9 +473,18 @@ textarea {
   min-width: 0;
 }
 
-.quote-page > * {
+.quote-page > .form-card,
+.quote-page > .actions {
+  width: 100%;
+  max-width: 36rem;
+  margin-inline: auto;
   min-width: 0;
+}
+
+.quote-page > .proposal {
+  width: 100%;
   max-width: 100%;
+  min-width: 0;
 }
 
 .proposal {
@@ -838,17 +849,25 @@ textarea {
   }
 
   .mist-head {
-    flex-wrap: wrap;
-    padding-right: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    padding: 0 16px;
   }
 
   .mist-head .big-tick {
-    flex: 1 1 100%;
+    flex: none;
+    width: 100%;
+    padding: 12px 0 6px;
   }
 
   .mist-head .bait-count {
     width: 100%;
-    padding: 0 16px 10px;
+    padding: 0 0 10px;
+  }
+
+  .mist-place {
+    padding: 0 16px 14px;
   }
 
   .quote-item {
@@ -919,7 +938,7 @@ textarea {
     flex-wrap: nowrap;
     align-items: stretch;
     gap: 10px;
-    padding-right: 0;
+    padding: 0 16px;
     min-width: 0;
     max-width: 100%;
   }
@@ -928,6 +947,8 @@ textarea {
   .mist-head .big-tick {
     width: 100%;
     flex: none;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .bait-count,
@@ -948,11 +969,12 @@ textarea {
     max-width: 100%;
     min-width: 0;
     min-height: 44px;
+    text-align: left;
   }
 
   .mist-head .bait-count {
     width: 100%;
-    padding: 0 16px 8px;
+    padding: 0 0 8px;
   }
 
   .mist-place {
