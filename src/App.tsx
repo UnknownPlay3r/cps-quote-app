@@ -419,14 +419,15 @@ function QuoteEditor({
                 <input
                   type="checkbox"
                   checked={draft.installationFee}
-                  onChange={(e) => patch({ installationFee: e.target.checked })}
+                  onChange={(e) =>
+                    patch({ installationFee: e.target.checked, serviceFeeLocked: false })
+                  }
                 />
                 Installation fee
               </label>
             </div>
             <p className="field-help">
-              When ticked, INSTALL FEE includes bait stations × the station rate from Rates and
-              times.
+              When ticked, bait station $ goes on INSTALL FEE only, not TOTAL COST PER SERVICE.
             </p>
           </div>
           <div>
@@ -766,9 +767,9 @@ function SettingsPanel({
     <section className="card form-card">
       <h2>Rates and time allowances</h2>
       <p>
-        Labour rate ($ per hour) × service time, plus bait stations × the station rate, set TOTAL
-        COST PER SERVICE. Time Mist and FCU prices here set the install fee. Install time is
-        calculated at 1 bait station = {settings.minutesPerStationInstall} min.
+        Labour rate × service time sets TOTAL COST PER SERVICE. Bait station $ goes there unless
+        Installation fee is ticked — then it goes on INSTALL FEE instead. Time Mist and FCU add to
+        INSTALL FEE. Install time is 1 bait station = {settings.minutesPerStationInstall} min.
       </p>
       <div className="fields">
         <div className="row-2">
@@ -838,8 +839,8 @@ function SettingsPanel({
           </label>
         </div>
         <p className="field-help">
-          TOTAL COST PER SERVICE is (service time ÷ 60 × labour rate) + (bait stations × station
-          rate). Annual cost is that × visits. INSTALL FEE is separate.
+          TOTAL COST PER SERVICE is service time ÷ 60 × labour rate, plus bait stations × station
+          rate only when Installation fee is not ticked. Annual cost is that × visits.
         </p>
         <div className="row-2">
           <label>

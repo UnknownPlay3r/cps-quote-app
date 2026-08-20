@@ -183,7 +183,7 @@ export function calculateQuote(input: QuoteInput, settings: Settings): QuoteResu
   const fcuInstall = unitCount(input.fcu, input.fcuCount) * parseMoney(settings.fcuPrice);
   const installFee = roundMoney(baitInstall + timeMistInstall + fcuInstall);
   const labourPart = serviceFeeFromTime(serviceMinutes, settings);
-  const baitServicePart = stations * rate;
+  const baitServicePart = input.installationFee ? 0 : stations * rate;
   const liveServiceFee = roundMoney(labourPart + baitServicePart);
   const serviceFee = input.serviceFeeLocked
     ? parseMoney(input.serviceFee)
