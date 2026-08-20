@@ -22,6 +22,7 @@ body,
 #root {
   margin: 0;
   min-height: 100%;
+  max-width: 100%;
   font-family: var(--font);
 }
 
@@ -56,6 +57,9 @@ td,
   padding: 18px 28px;
   background: var(--navy);
   color: #fff;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .brand-lockup {
@@ -64,6 +68,8 @@ td,
   background: #fff;
   border-radius: 8px;
   padding: 6px 10px;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .cps-logo {
@@ -95,7 +101,10 @@ td,
 
 .nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .nav button,
@@ -122,12 +131,15 @@ td,
 
 .wrap {
   max-width: 1080px;
+  width: 100%;
   margin: 0 auto;
   padding: 22px 28px 48px;
+  min-width: 0;
 }
 
 .form-card {
   max-width: 36rem;
+  width: 100%;
 }
 
 .form-card .fields {
@@ -150,6 +162,8 @@ td,
   border-radius: 10px;
   box-shadow: var(--shadow);
   padding: 20px;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .card h2 {
@@ -187,6 +201,7 @@ input,
 select,
 textarea {
   width: 100%;
+  max-width: 100%;
   border: 1px solid var(--line);
   background: #fff;
   border-radius: 8px;
@@ -445,6 +460,20 @@ textarea {
 .quote-page {
   display: grid;
   gap: 22px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.quote-page > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.proposal {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .proposal h2 {
@@ -456,6 +485,10 @@ textarea {
 
 .proposal-scroll {
   overflow-x: auto;
+  max-width: 100%;
+  min-width: 0;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 .proposal-table {
@@ -584,6 +617,8 @@ textarea {
   color: var(--muted);
   font-size: 0.78rem;
   text-align: center;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 .actions {
@@ -631,7 +666,8 @@ textarea {
 
 @media screen {
   html,
-  body {
+  body,
+  #root {
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
@@ -664,7 +700,8 @@ textarea {
 
 @media screen and (max-width: 700px) {
   .app-header {
-    flex-wrap: wrap;
+    flex-direction: column;
+    flex-wrap: nowrap;
     align-items: stretch;
     gap: 12px;
     padding-top: max(12px, env(safe-area-inset-top));
@@ -672,18 +709,22 @@ textarea {
   }
 
   .brand-lockup {
+    width: 100%;
+    justify-content: center;
     padding: 4px 8px;
     max-width: 100%;
   }
 
   .cps-logo-nav {
     height: 32px;
-    max-width: min(220px, 72vw);
+    width: auto;
+    max-width: 100%;
   }
 
   .cps-logo-proposal {
     height: 40px;
-    max-width: min(200px, 58vw);
+    width: auto;
+    max-width: 100%;
   }
 
   .nav {
@@ -701,6 +742,8 @@ textarea {
   .btn,
   .chip {
     min-height: 44px;
+    min-width: 0;
+    max-width: 100%;
     padding: 10px 14px;
     touch-action: manipulation;
   }
@@ -714,7 +757,7 @@ textarea {
   .form-card .fields,
   .bait-rows,
   .tick-stack {
-    max-width: none;
+    max-width: 100%;
   }
 
   .card {
@@ -754,7 +797,7 @@ textarea {
   .bait-row {
     flex-direction: column;
     align-items: stretch;
-    max-width: none;
+    max-width: 100%;
   }
 
   .bait-count,
@@ -806,9 +849,15 @@ textarea {
     line-height: 1.4;
   }
 
+  .big-tick {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
   .proposal-scroll {
-    margin: 0 -4px;
+    margin: 0;
     padding-bottom: 6px;
+    max-width: 100%;
   }
 
   .proposal-table {
