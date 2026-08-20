@@ -16,7 +16,11 @@ const APP_VERSION_LABEL = `Version ${__APP_VERSION__}`;
 
 function makeQuote(settings: Settings): QuoteInput {
   return applyGeneratedQuote(
-    { ...emptyQuote(), stationRate: settings.stationHardwareCost },
+    {
+      ...emptyQuote(),
+      stationRate: settings.stationHardwareCost,
+      serviceFee: settings.costPerService,
+    },
     settings,
   );
 }
@@ -597,21 +601,6 @@ function QuoteEditor({
               </p>
             )}
           </div>
-          <div>
-            <h3 className="field-heading">Cost per service</h3>
-            <p className="field-help">
-              Type the selling price per visit. Annual cost is this amount × visits. Bait station,
-              Time Mist, and FCU prices are set in Rates and times.
-            </p>
-            <label>
-              Cost per service ($)
-              <NumberInput
-                value={draft.serviceFee ?? 0}
-                step="0.01"
-                onCommit={(n) => patch({ serviceFee: n })}
-              />
-            </label>
-          </div>
           <div className="row-2">
             <label>
               Install time (min)
@@ -750,9 +739,9 @@ function SettingsPanel({
     <section className="card form-card">
       <h2>Rates and time allowances</h2>
       <p>
-        Enter the cost per service on each job. Bait station, Time Mist, and FCU prices here set
-        the install fee on the proposal. Install time is calculated at 1 bait station ={" "}
-        {settings.minutesPerStationInstall} min.
+        Cost per service, bait station, Time Mist, and FCU prices here set the proposal. Cost per
+        service is the customer price per visit, not the labour rate. Install time is calculated at
+        1 bait station = {settings.minutesPerStationInstall} min.
       </p>
       <div className="fields">
         <div className="row-2">
@@ -802,6 +791,20 @@ function SettingsPanel({
               onCommit={(n) => patch({ residualRoutineMinutes: n })}
             />
           </label>
+        </div>
+        <div>
+          <label>
+            Cost per service ($)
+            <NumberInput
+              value={settings.costPerService}
+              step="0.01"
+              onCommit={(n) => patch({ costPerService: n })}
+            />
+          </label>
+          <p className="field-help">
+            Customer price per visit on the proposal (TOTAL COST PER SERVICE). Annual cost is this
+            amount × visits. This is not the labour rate.
+          </p>
         </div>
         <div className="row-2">
           <label>
