@@ -117,9 +117,9 @@ export const DEFAULT_SETTINGS: Settings = {
   residualInstallMinutes: 20,
   residualRoutineMinutes: 20,
   stationHardwareCost: 35,
-  timeMistPrice: 0,
-  fcuPrice: 0,
-  hourlyRate: 95,
+  timeMistPrice: 35,
+  fcuPrice: 200,
+  hourlyRate: 260,
 };
 
 export function emptyQuote(): QuoteInput {

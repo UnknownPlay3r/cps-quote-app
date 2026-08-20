@@ -8,6 +8,26 @@ import {
 
 const SETTINGS_KEY = "pest-quote-settings";
 const QUOTES_KEY = "pest-quote-history";
+const SETTINGS_DEFAULTS_VERSION = 1;
+
+type StoredSettings = Partial<Settings> & { defaultsVersion?: number };
+
+const NUMERIC_SETTING_KEYS = [
+  "minutesPerStationInstall",
+  "minutesPerStationRoutine",
+  "residualInstallMinutes",
+  "residualRoutineMinutes",
+  "stationHardwareCost",
+  "timeMistPrice",
+  "fcuPrice",
+  "hourlyRate",
+] as const;
+
+function isUnsetNumber(value: unknown): boolean {
+  if (value == null || value === "") return true;
+  const n = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(n) && n === 0;
+}
 
 function mapFrequency(value: string | undefined): ServiceFrequency {
   if (value === "12vpa" || value === "1/12" || value === "monthly") return "12vpa";
@@ -23,14 +43,22 @@ export function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
     if (!raw) return { ...DEFAULT_SETTINGS };
-    const parsed = JSON.parse(raw) as Partial<Settings>;
-    const merged = { ...DEFAULT_SETTINGS, ...parsed };
-    if (parsed.minutesPerStationInstall == null || parsed.minutesPerStationInstall === 2) {
-      merged.minutesPerStationInstall = DEFAULT_SETTINGS.minutesPerStationInstall;
+    const parsed = JSON.parse(raw) as StoredSettings;
+    const { defaultsVersion: storedVersion, ...storedFields } = parsed;
+    const merged: Settings = { ...DEFAULT_SETTINGS, ...storedFields };
+
+    if ((Number(storedVersion) || 0) < SETTINGS_DEFAULTS_VERSION) {
+      if (!storedFields.companyName || storedFields.companyName === "Your Pest Control") {
+        merged.companyName = DEFAULT_SETTINGS.companyName;
+      }
+      for (const key of NUMERIC_SETTING_KEYS) {
+        if (isUnsetNumber(storedFields[key])) {
+          merged[key] = DEFAULT_SETTINGS[key];
+        }
+      }
+      saveSettings(merged);
     }
-    if (!parsed.companyName || parsed.companyName === "Your Pest Control") {
-      merged.companyName = DEFAULT_SETTINGS.companyName;
-    }
+
     return merged;
   } catch {
     return { ...DEFAULT_SETTINGS };
@@ -38,7 +66,11 @@ export function loadSettings(): Settings {
 }
 
 export function saveSettings(settings: Settings) {
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  const stored: StoredSettings = {
+    ...settings,
+    defaultsVersion: SETTINGS_DEFAULTS_VERSION,
+  };
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(stored));
 }
 
 export function loadQuotes(): QuoteInput[] {
