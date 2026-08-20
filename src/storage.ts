@@ -8,7 +8,7 @@ import {
 
 const SETTINGS_KEY = "pest-quote-settings";
 const QUOTES_KEY = "pest-quote-history";
-const SETTINGS_DEFAULTS_VERSION = 1;
+const SETTINGS_DEFAULTS_VERSION = 2;
 
 type StoredSettings = Partial<Settings> & { defaultsVersion?: number };
 
@@ -47,14 +47,20 @@ export function loadSettings(): Settings {
     const { defaultsVersion: storedVersion, ...storedFields } = parsed;
     const merged: Settings = { ...DEFAULT_SETTINGS, ...storedFields };
 
-    if ((Number(storedVersion) || 0) < SETTINGS_DEFAULTS_VERSION) {
-      if (!storedFields.companyName || storedFields.companyName === "Your Pest Control") {
-        merged.companyName = DEFAULT_SETTINGS.companyName;
-      }
-      for (const key of NUMERIC_SETTING_KEYS) {
-        if (isUnsetNumber(storedFields[key])) {
-          merged[key] = DEFAULT_SETTINGS[key];
+    const version = Number(storedVersion) || 0;
+    if (version < SETTINGS_DEFAULTS_VERSION) {
+      if (version < 1) {
+        if (!storedFields.companyName || storedFields.companyName === "Your Pest Control") {
+          merged.companyName = DEFAULT_SETTINGS.companyName;
         }
+        for (const key of NUMERIC_SETTING_KEYS) {
+          if (isUnsetNumber(storedFields[key])) {
+            merged[key] = DEFAULT_SETTINGS[key];
+          }
+        }
+      }
+      if (!String(storedFields.companyPhone ?? "").trim()) {
+        merged.companyPhone = DEFAULT_SETTINGS.companyPhone;
       }
       saveSettings(merged);
     }

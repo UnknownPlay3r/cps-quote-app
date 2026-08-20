@@ -109,7 +109,7 @@ export const FREQUENCY_OPTIONS: {
 
 export const DEFAULT_SETTINGS: Settings = {
   companyName: "Competitive Pest Services",
-  companyPhone: "",
+  companyPhone: "1300 766 614",
   companyEmail: "",
   companyAbn: "",
   minutesPerStationInstall: 3,
