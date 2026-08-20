@@ -11,6 +11,8 @@ import {
   type View,
 } from "./types";
 
+const APP_VERSION_LABEL = `Version ${__APP_VERSION__}`;
+
 function makeQuote(settings: Settings): QuoteInput {
   return applyGeneratedQuote(
     { ...emptyQuote(), stationRate: settings.stationHardwareCost },
@@ -118,7 +120,7 @@ export default function App() {
         )}
       </main>
       <footer className="app-footer no-print">
-        Created by Competitive Pest Services · © 2026 Competitive Pest Services
+        Created by Competitive Pest Services · © 2026 Competitive Pest Services · {APP_VERSION_LABEL}
       </footer>
     </>
   );
@@ -648,6 +650,7 @@ function QuoteEditor({
           />
           <h2>Your Proposal</h2>
         </div>
+        <p className="table-swipe-hint no-print">Swipe sideways to see the full proposal.</p>
         <div className="proposal-scroll">
           <table className="proposal-table">
             <thead>
@@ -721,7 +724,7 @@ function QuoteEditor({
         <p className="proposal-credit">
           Created by Competitive Pest Services
           <br />
-          © 2026 Competitive Pest Services
+          © 2026 Competitive Pest Services · {APP_VERSION_LABEL}
         </p>
       </section>
 

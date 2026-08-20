@@ -1,8 +1,12 @@
 node_modules
 dist
+android
 .DS_Store
 *.local
 .env*
 *.pem
 *.key
+*.jks
+*.keystore
+key.properties
 credentials.json
