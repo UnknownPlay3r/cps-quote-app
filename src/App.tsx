@@ -142,7 +142,7 @@ export default function App() {
           <img
             className="cps-logo cps-logo-nav"
             src={cpsLogo}
-            alt="Competitive Pest Services"
+            alt="Commercial Pest Services"
           />
         </div>
         <nav className="nav">
@@ -658,7 +658,7 @@ function QuoteEditor({
           <img
             className="cps-logo cps-logo-proposal"
             src={cpsLogo}
-            alt="Competitive Pest Services"
+            alt="Commercial Pest Services"
           />
           <h2>Your Proposal</h2>
         </div>
